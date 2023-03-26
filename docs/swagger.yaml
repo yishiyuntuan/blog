@@ -1,0 +1,41 @@
+basePath: /
+host: localhost:3000
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server Petstore server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Example API
+  version: "1.0"
+paths:
+  /article/list:
+    get:
+      parameters:
+      - description: 分类ID
+        in: query
+        name: cid
+        type: integer
+      - description: 菜单ID
+        in: query
+        name: mid
+        type: integer
+      - description: 标签ID
+        in: query
+        name: tid
+        type: integer
+      - description: 分页大小
+        in: query
+        name: pageSize
+        type: integer
+      - description: 页码
+        in: query
+        name: pageNum
+        type: integer
+      responses: {}
+      summary: 获取文章列表
+swagger: "2.0"
