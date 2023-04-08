@@ -1,7 +1,8 @@
 package main
 
 import (
-	"blog/routes"
+	"blog/api/v1/routes"
+	"blog/middleware/logger"
 
 	"github.com/kataras/iris/v12"
 )
@@ -21,13 +22,10 @@ import (
 // @host localhost:3000
 // @BasePath /
 func main() {
-	// model.InitDb()
-	// db.InitRedis()
-	// routes.InitRouter()
 	app := iris.Default()
-	routes.Monitor(app)
+
+	app.UseRouter(logger.LoggerHandler)
 	routes.InitRouterV2(app)
-	routes.DebugStatisviz(app)
 	err := app.Listen(":3000")
 	if err != nil {
 		return

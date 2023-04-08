@@ -1,26 +1,9 @@
-package mapper_impl
+package mapper
 
 import (
-	"blog/dao/gen"
-	"blog/dao/mapper"
-	"blog/logger"
+	"blog/middleware/logger"
 	"blog/model/entity"
-
-	"golang.org/x/sync/singleflight"
 )
-
-type userDao struct {
-	dao *gen.UserExec
-	// cache cache.ArticleCache
-	sfg *singleflight.Group
-}
-
-// NewUserDao creating the dao interface
-func NewUserDao(dao *gen.UserExec) mapper.UserDao {
-	return &userDao{
-		dao: dao,
-		sfg: new(singleflight.Group)}
-}
 
 func (u userDao) IsExist(username string) bool {
 	first, err := u.dao.Where(u.dao.Username.Eq(username)).First()

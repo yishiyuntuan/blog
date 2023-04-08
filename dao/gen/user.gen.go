@@ -51,11 +51,11 @@ type user struct {
 	CreatedAt field.Time
 	UpdatedAt field.Time
 	DeletedAt field.Field
-	Username  field.String
-	Password  field.String
+	Username  field.String // 用户名
+	Password  field.String // 密码
 	Relation  field.String
-	Role      field.Int64
-	Avatar    field.String
+	Role      field.Int64  // 权限
+	Avatar    field.String // 头像
 	NickName  field.String
 
 	fieldMap map[string]field.Expr

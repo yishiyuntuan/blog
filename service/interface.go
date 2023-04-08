@@ -13,12 +13,12 @@ type ArticleService interface {
 	GetArticle(id uint64) *Article
 }
 
-type CategoryService interface {
-	GetCategory(isShow bool) *entity.Category
-}
-
 type UserService interface {
 	// 判断用户是否存在
 	IsExist(username string) bool
-	Register(username string, password []byte) error
+	Register(user User) error
+}
+
+type CategoryService interface {
+	GetCategory(isShow bool) *entity.Category
 }

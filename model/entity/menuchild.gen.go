@@ -9,7 +9,7 @@ const TableNameMenuchild = "menuchild"
 // Menuchild mapped from table <menuchild>
 type Menuchild struct {
 	ID       uint64 `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true" json:"id"`
-	Sort     *int64 `gorm:"column:sort;type:bigint" json:"sort"`
+	Sort     uint64 `gorm:"column:sort;type:bigint unsigned" json:"sort"`                                      // 排序字段
 	Name     string `gorm:"column:name;type:varchar(256);not null;uniqueIndex:name,priority:1" json:"name"`    // 菜单名
 	Ename    string `gorm:"column:ename;type:varchar(256);not null;uniqueIndex:ename,priority:1" json:"ename"` // 英文名
 	Logo     string `gorm:"column:logo;type:longtext;not null" json:"logo"`                                    // 图标名

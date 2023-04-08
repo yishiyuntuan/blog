@@ -51,14 +51,14 @@ type question struct {
 	ID        field.Uint64
 	CreatedAt field.Time
 	UpdatedAt field.Time
-	Name      field.String
-	Qq        field.String
-	Email     field.String
-	Question  field.String
-	Reply     field.String
-	Like      field.Int64
-	Check     field.Bool
-	Show      field.Bool
+	Name      field.String // 昵称
+	Qq        field.String // QQ
+	Email     field.String // 邮箱
+	Question  field.String // 问题
+	Reply     field.String // 回答
+	Like      field.Int64  // 点赞
+	Check     field.Bool   // 审核状态
+	Show      field.Bool   // 显示
 
 	fieldMap map[string]field.Expr
 }

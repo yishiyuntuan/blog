@@ -2,7 +2,9 @@ package controller
 
 import (
 	"blog/conts"
-	"blog/logger"
+	"blog/dao/gen"
+	mapper_impl "blog/dao/mapper"
+	"blog/middleware/logger"
 	"blog/model/entity"
 	"blog/model/vo"
 	"blog/service"
@@ -13,12 +15,9 @@ import (
 	"github.com/kataras/iris/v12/mvc"
 )
 
-type UserController struct {
-	ctx iris.Context
-	s   service.UserService
-}
-
 func (u UserController) Configure(r router.Party) {
+	userService := service.NewUserService(service.WithUserDao(mapper_impl.NewUserDao(gen.User)))
+	r.RegisterDependency(userService)
 	// 依赖注入
 	mvc.Configure(r, func(app *mvc.Application) {
 		app.Handle(&u)
@@ -32,18 +31,16 @@ func (u UserController) Configure(r router.Party) {
 // @Router /user/register [post]
 func (u UserController) PostRegister(ctx iris.Context, user entity.User) *vo.Result {
 	logger.Log.Debug(user)
-	password := []byte(ctx.FormValue("password"))
-	username := ctx.FormValue("username")
 	// 校验参数
-	if !tool.VerifyFormat(conts.VERIFY_EXP_USERNAME, username) || !tool.VerifyFormat(conts.VERIFY_EXP_PASSWORD, string(password)) {
+	if !tool.VerifyFormat(conts.VERIFY_EXP_USERNAME, user.Username) || !tool.VerifyFormat(conts.VERIFY_EXP_PASSWORD, string(user.Password)) {
 		return vo.Fail(vo.WithMessage("用户名或密码格式不正确"), vo.WithCode(400))
 	}
 	// 判断用户是否已经存在
-	if u.s.IsExist(username) {
+	if u.Service.IsExist(user.Username) {
 		return vo.Fail(vo.WithMessage("用户名已被注册"), vo.WithCode(500))
 	}
 	// 注册用户
-	if err := u.s.Register(username, password); err != nil {
+	if err := u.Service.Register(user); err != nil {
 		return vo.Fail(vo.WithMessage("注册失败"), vo.WithCode(500))
 	}
 	return vo.Success(vo.WithMessage("注册成功"), vo.WithCode(200))

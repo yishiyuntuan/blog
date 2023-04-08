@@ -1,4 +1,7 @@
 basePath: /
+definitions:
+  entity.Article:
+    type: object
 host: localhost:3000
 info:
   contact:
@@ -13,6 +16,16 @@ info:
   title: Swagger Example API
   version: "1.0"
 paths:
+  /article/{id}:
+    get:
+      parameters:
+      - description: 文章ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 获取文章详情
   /article/list:
     get:
       parameters:
@@ -38,4 +51,15 @@ paths:
         type: integer
       responses: {}
       summary: 获取文章列表
+  /article/test:
+    get:
+      parameters:
+      - description: json
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Article'
+      responses: {}
+      summary: 测试
 swagger: "2.0"

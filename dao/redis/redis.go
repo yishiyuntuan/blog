@@ -2,7 +2,7 @@ package redis
 
 import (
 	"blog/db"
-	"blog/logger"
+	"blog/middleware/logger"
 	"context"
 	"time"
 

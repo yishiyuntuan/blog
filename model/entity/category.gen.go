@@ -8,10 +8,10 @@ const TableNameCategory = "category"
 
 // Category mapped from table <category>
 type Category struct {
-	ID       uint64  `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true" json:"id"`
-	Name     string  `gorm:"column:name;type:varchar(255);not null;uniqueIndex:name,priority:1" json:"name"` // 分类名
-	Mid      *uint64 `gorm:"column:mid;type:bigint unsigned;index:fk_menuchild_cids,priority:1" json:"mid"`  // 菜单子项ID
-	Homeshow *bool   `gorm:"column:homeshow;type:tinyint(1);not null;default:1" json:"homeshow"`             // 主页是否显示
+	ID       uint64 `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true" json:"id"`
+	Name     string `gorm:"column:name;type:varchar(255);not null;uniqueIndex:name,priority:1" json:"name"` // 分类名
+	Mid      uint64 `gorm:"column:mid;type:bigint unsigned;index:fk_menuchild_cids,priority:1" json:"mid"`  // 菜单子项ID
+	Homeshow *bool  `gorm:"column:homeshow;type:tinyint(1);not null;default:1" json:"homeshow"`             // 主页是否显示
 }
 
 // TableName Category's table name

@@ -2,8 +2,7 @@ package controller
 
 import (
 	"blog/dao/gen"
-	"blog/dao/mapper/mapper-impl"
-	"blog/logger"
+	"blog/dao/mapper"
 	"blog/model/vo"
 	"blog/service"
 	"blog/util/tool"
@@ -13,23 +12,13 @@ import (
 	"github.com/kataras/iris/v12/mvc"
 )
 
-type ArticleController struct {
-	ctx iris.Context
-	s   service.ArticleService
-}
-
-func NewArticleController(s service.ArticleService) *ArticleController {
-	return &ArticleController{
-		s: s,
-	}
-}
-
 func (ac ArticleController) Configure(r router.Party) {
 	// 依赖注入
-	dao := mapper_impl.NewArticleDao(gen.Article, gen.Q)
-	service := service.NewArticleService(service.WithArticleDao(dao))
-	r.RegisterDependency(service)
-	// ac.s = service.NewArticleService(service.WithA(30000))
+	dao := mapper.NewArticleDao(gen.Article, gen.Q)
+	articleService := service.NewArticleService(service.WithArticleDao(dao))
+	r.RegisterDependency(articleService)
+	r.Use(iris.Compression)
+	// ac.Service = articleService.NewArticleService(articleService.WithA(30000))
 	mvc.Configure(r, func(app *mvc.Application) {
 		app.Handle(&ac)
 	})
@@ -45,16 +34,13 @@ func (ac ArticleController) Configure(r router.Party) {
 // @Param   pageNum     query    int     false        "页码"
 // @Router /article/list [get]
 func (ac ArticleController) GetList(ctx iris.Context) *vo.Result {
-
-	logger.Log.Debug("dddddddd", ac.s == nil, ac.ctx == nil)
-
 	// 分页最大数,分页偏移量
 	size, num := tool.PageTool(ctx)
 	cid := ctx.URLParam("cid") // 分类ID
 	mid := ctx.URLParam("mid") // 菜单ID
 	tid := ctx.URLParam("tid") // 标签ID
 
-	list, total := ac.s.GetsArticleList(cid, mid, tid, size, num)
+	list, total := ac.Service.GetsArticleList(cid, mid, tid, size, num)
 
 	data := map[string]interface{}{
 		"list":  list,
@@ -63,11 +49,11 @@ func (ac ArticleController) GetList(ctx iris.Context) *vo.Result {
 	return vo.Success(vo.WithData(data))
 }
 
-// GetArticle 获取单文章
-// @Summary 获取单文章
+// GetBy
+// @Summary 获取文章详情
 // @Param   id     path    int     true        "文章ID"
 // @Router /article/{id} [get]
 func (ac ArticleController) GetBy(id uint64) *vo.Result {
-	article := ac.s.GetArticle(id)
+	article := ac.Service.GetArticle(id)
 	return vo.Success(vo.WithData(article))
 }

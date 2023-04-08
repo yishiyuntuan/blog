@@ -61,6 +61,43 @@ const docTemplate = `{
                 ],
                 "responses": {}
             }
+        },
+        "/article/test": {
+            "get": {
+                "summary": "测试",
+                "parameters": [
+                    {
+                        "description": "json",
+                        "name": "json",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entity.Article"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/article/{id}": {
+            "get": {
+                "summary": "获取文章详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "文章ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        }
+    },
+    "definitions": {
+        "entity.Article": {
+            "type": "object"
         }
     }
 }`

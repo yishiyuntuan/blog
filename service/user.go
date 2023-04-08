@@ -1,61 +1,35 @@
 package service
 
 import (
-	"blog/dao/mapper"
+	"blog/middleware/logger"
 	"blog/model/entity"
 	"time"
 
+	"github.com/bwmarrin/snowflake"
 	"golang.org/x/crypto/bcrypt"
 )
-
-type userServiceImpl struct {
-	iDao mapper.UserDao
-}
-
-// type Option func(*userServiceImpl)
-
-// NewUserService 创建用户服务
-func NewUserService(opt ...Option) UserService {
-	u := &userServiceImpl{}
-	for _, f := range opt {
-		f(u)
-	}
-	return u
-}
-
-func WithUserDao(iDao mapper.UserDao) Option {
-	return func(u any) {
-		impl, ok := u.(*userServiceImpl)
-		if ok {
-			impl.iDao = iDao
-		}
-	}
-}
 
 func (u userServiceImpl) IsExist(username string) bool {
 	return u.iDao.IsExist(username)
 }
 
-func (u userServiceImpl) Register(username string, password []byte) error {
-
-	// password 加密
-	password = append(password, []byte("yishiyuntuan")...)
-	hash, err := bcrypt.GenerateFromPassword(password, bcrypt.DefaultCost)
+func (u userServiceImpl) Register(user entity.User) error { // password 加密
+	hash, err := bcrypt.GenerateFromPassword(user.Password, bcrypt.DefaultCost)
 	if err != nil {
 		return err
 	}
-	// 构造用户结构体
-	user := entity.User{
-		ID:        2222,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-		Username:  username,
-		Password:  hash,
-		Relation:  "关系",
-		Role:      -1,
-		Avatar:    "nil",
-		NickName:  "nil",
+	user.Password = hash
+	// id生成
+	node, err := snowflake.NewNode(1)
+	if err != nil {
+		logger.Log.Error(err)
+		return err
 	}
+	user.ID = uint64(node.Generate())
+	user.CreatedAt = time.Now()
+	user.UpdatedAt = time.Now()
+	// todo: 其他字段
+
 	// 保存用户信息
 	return u.iDao.Register(&user)
 }

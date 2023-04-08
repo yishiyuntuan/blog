@@ -50,10 +50,10 @@ type article struct {
 	CreatedAt field.Time
 	UpdatedAt field.Time
 	DeletedAt field.Field
-	Title     field.String
-	Img       field.String
-	Desc      field.String
-	Content   field.String
+	Title     field.String // 标题
+	Img       field.String // 首图
+	Desc      field.String // 描述
+	Content   field.String // 内容
 	Cid       field.Uint64 // 分类ID
 
 	fieldMap map[string]field.Expr

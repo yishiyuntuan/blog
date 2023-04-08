@@ -28,7 +28,7 @@ func newMenuchild(db *gorm.DB, opts ...gen.DOOption) menuchild {
 	tableName := _menuchild.menuchildDo.TableName()
 	_menuchild.ALL = field.NewAsterisk(tableName)
 	_menuchild.ID = field.NewUint64(tableName, "id")
-	_menuchild.Sort = field.NewInt64(tableName, "sort")
+	_menuchild.Sort = field.NewUint64(tableName, "sort")
 	_menuchild.Name = field.NewString(tableName, "name")
 	_menuchild.Ename = field.NewString(tableName, "ename")
 	_menuchild.Logo = field.NewString(tableName, "logo")
@@ -45,7 +45,7 @@ type menuchild struct {
 
 	ALL      field.Asterisk
 	ID       field.Uint64
-	Sort     field.Int64
+	Sort     field.Uint64 // 排序字段
 	Name     field.String // 菜单名
 	Ename    field.String // 英文名
 	Logo     field.String // 图标名
@@ -68,7 +68,7 @@ func (m menuchild) As(alias string) *menuchild {
 func (m *menuchild) updateTableName(table string) *menuchild {
 	m.ALL = field.NewAsterisk(table)
 	m.ID = field.NewUint64(table, "id")
-	m.Sort = field.NewInt64(table, "sort")
+	m.Sort = field.NewUint64(table, "sort")
 	m.Name = field.NewString(table, "name")
 	m.Ename = field.NewString(table, "ename")
 	m.Logo = field.NewString(table, "logo")

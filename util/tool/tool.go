@@ -1,9 +1,11 @@
 package tool
 
 import (
-	"github.com/kataras/iris/v12"
+	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/kataras/iris/v12"
 )
 
 // SplitToIntList 字符串切割成int数组
@@ -65,4 +67,13 @@ func PageIds(pageNum, pageSize int, dataIds []string) (ids []string) {
 		ids = dataIds[(pageNum-1)*pageSize : pageNum*pageSize]
 	}
 	return
+}
+
+// VerifyFormat 校验格式
+func VerifyFormat(format string, data string) bool {
+	if data == "" {
+		return false
+	}
+	reg := regexp.MustCompile(format)
+	return reg.MatchString(data)
 }

@@ -15,15 +15,15 @@ const TableNameUser = "user"
 // User mapped from table <user>
 type User struct {
 	ID        uint64         `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true" json:"id"`
-	CreatedAt *time.Time     `gorm:"column:created_at;type:datetime(3)" json:"created_at"`
-	UpdatedAt *time.Time     `gorm:"column:updated_at;type:datetime(3)" json:"updated_at"`
+	CreatedAt time.Time      `gorm:"column:created_at;type:datetime(3)" json:"created_at"`
+	UpdatedAt time.Time      `gorm:"column:updated_at;type:datetime(3)" json:"updated_at"`
 	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;type:datetime(3);index:idx_user_deleted_at,priority:1" json:"deleted_at"`
-	Username  string         `gorm:"column:username;type:longtext;not null" json:"username"`
-	Password  string         `gorm:"column:password;type:longtext;not null" json:"password"`
+	Username  string         `gorm:"column:username;type:varchar(40);not null" json:"username"`  // 用户名
+	Password  []byte         `gorm:"column:password;type:varchar(100);not null" json:"password"` // 密码
 	Relation  string         `gorm:"column:relation;type:longtext;not null" json:"relation"`
-	Role      *int64         `gorm:"column:role;type:bigint" json:"role"`
-	Avatar    *string        `gorm:"column:avatar;type:longtext" json:"avatar"`
-	NickName  *string        `gorm:"column:nick_name;type:longtext" json:"nick_name"`
+	Role      int64          `gorm:"column:role;type:bigint" json:"role"`          // 权限
+	Avatar    string         `gorm:"column:avatar;type:varchar(20)" json:"avatar"` // 头像
+	NickName  string         `gorm:"column:nick_name;type:varchar(20)" json:"nick_name"`
 }
 
 // TableName User's table name

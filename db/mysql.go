@@ -1,7 +1,7 @@
 package db
 
 import (
-	"blog/logger"
+	"blog/middleware/logger"
 	"fmt"
 	"log"
 	"os"

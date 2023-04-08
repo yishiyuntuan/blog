@@ -12,17 +12,17 @@ const TableNameQuestion = "question"
 
 // Question mapped from table <question>
 type Question struct {
-	ID        uint64     `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true" json:"id"`
-	CreatedAt *time.Time `gorm:"column:created_at;type:datetime(3)" json:"created_at"`
-	UpdatedAt *time.Time `gorm:"column:updated_at;type:datetime(3)" json:"updated_at"`
-	Name      *string    `gorm:"column:name;type:longtext" json:"name"`
-	Qq        *string    `gorm:"column:qq;type:longtext" json:"qq"`
-	Email     *string    `gorm:"column:email;type:longtext" json:"email"`
-	Question  string     `gorm:"column:question;type:longtext;not null" json:"question"`
-	Reply     *string    `gorm:"column:reply;type:longtext" json:"reply"`
-	Like      int64      `gorm:"column:like;type:bigint;not null" json:"like"`
-	Check     bool       `gorm:"column:check;type:tinyint(1);not null" json:"check"`
-	Show      bool       `gorm:"column:show;type:tinyint(1);not null" json:"show"`
+	ID        uint64    `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true" json:"id"`
+	CreatedAt time.Time `gorm:"column:created_at;type:datetime(3)" json:"created_at"`
+	UpdatedAt time.Time `gorm:"column:updated_at;type:datetime(3)" json:"updated_at"`
+	Name      string    `gorm:"column:name;type:varchar(256)" json:"name"`                  // 昵称
+	Qq        string    `gorm:"column:qq;type:varchar(256)" json:"qq"`                      // QQ
+	Email     string    `gorm:"column:email;type:varchar(256)" json:"email"`                // 邮箱
+	Question  string    `gorm:"column:question;type:varchar(256);not null" json:"question"` // 问题
+	Reply     string    `gorm:"column:reply;type:varchar(256)" json:"reply"`                // 回答
+	Like      int64     `gorm:"column:like;type:bigint;not null" json:"like"`               // 点赞
+	Check     bool      `gorm:"column:check;type:tinyint(1);not null" json:"check"`         // 审核状态
+	Show      bool      `gorm:"column:show;type:tinyint(1);not null" json:"show"`           // 显示
 }
 
 // TableName Question's table name

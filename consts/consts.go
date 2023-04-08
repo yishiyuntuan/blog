@@ -46,3 +46,10 @@ var (
 	BuildTime       string
 	BuildCommit     string
 )
+
+const (
+	// 用于验证用户的用户名
+	VERIFY_EXP_USERNAME = `^[a-zA-Z0-9_-]{4,16}$`
+	// 用于验证用户的密码
+	VERIFY_EXP_PASSWORD = `^[a-zA-Z0-9_-]{6,18}$`
+)
