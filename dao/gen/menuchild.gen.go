@@ -31,7 +31,7 @@ func newMenuchild(db *gorm.DB, opts ...gen.DOOption) menuchild {
 	_menuchild.Sort = field.NewUint64(tableName, "sort")
 	_menuchild.Name = field.NewString(tableName, "name")
 	_menuchild.Ename = field.NewString(tableName, "ename")
-	_menuchild.Logo = field.NewString(tableName, "logo")
+	_menuchild.Icon = field.NewString(tableName, "icon")
 	_menuchild.Link = field.NewString(tableName, "link")
 	_menuchild.ParentID = field.NewUint64(tableName, "parent_id")
 
@@ -48,7 +48,7 @@ type menuchild struct {
 	Sort     field.Uint64 // 排序字段
 	Name     field.String // 菜单名
 	Ename    field.String // 英文名
-	Logo     field.String // 图标名
+	Icon     field.String // 图标svg格式
 	Link     field.String // 路由名
 	ParentID field.Uint64 // 父级id
 
@@ -71,7 +71,7 @@ func (m *menuchild) updateTableName(table string) *menuchild {
 	m.Sort = field.NewUint64(table, "sort")
 	m.Name = field.NewString(table, "name")
 	m.Ename = field.NewString(table, "ename")
-	m.Logo = field.NewString(table, "logo")
+	m.Icon = field.NewString(table, "icon")
 	m.Link = field.NewString(table, "link")
 	m.ParentID = field.NewUint64(table, "parent_id")
 
@@ -95,7 +95,7 @@ func (m *menuchild) fillFieldMap() {
 	m.fieldMap["sort"] = m.Sort
 	m.fieldMap["name"] = m.Name
 	m.fieldMap["ename"] = m.Ename
-	m.fieldMap["logo"] = m.Logo
+	m.fieldMap["icon"] = m.Icon
 	m.fieldMap["link"] = m.Link
 	m.fieldMap["parent_id"] = m.ParentID
 }

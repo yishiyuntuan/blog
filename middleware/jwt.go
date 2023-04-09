@@ -1,5 +1,6 @@
 package middleware
 
+/*
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
@@ -99,3 +100,4 @@ func JwtToken(termination bool, role int) gin.HandlerFunc {
 		c.Next()
 	}
 }
+*/

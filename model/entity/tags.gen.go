@@ -9,9 +9,9 @@ const TableNameTags = "tags"
 // Tags mapped from table <tags>
 type Tags struct {
 	ID    uint64 `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true" json:"id"`
-	Name  string `gorm:"column:name;type:varchar(20);not null;uniqueIndex:name,priority:1" json:"name"` // 标签名
-	Logo  string `gorm:"column:logo;type:varchar(20)" json:"logo"`                                      // LOGO
-	Color string `gorm:"column:color;type:varchar(20)" json:"color"`                                    // 颜色
+	Name  string `gorm:"column:name;type:varchar(20);not null;uniqueIndex:name,priority:1;comment:标签名" json:"name"`
+	Logo  string `gorm:"column:logo;type:varchar(20);comment:LOGO" json:"logo"`
+	Color string `gorm:"column:color;type:varchar(20);comment:颜色" json:"color"`
 }
 
 // TableName Tags's table name

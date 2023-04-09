@@ -1,8 +1,8 @@
 database:
-  name: myblog
+  name: blog
   password: 123456
   user: root
   type: mysql
-  host: 127.0.0.1
+  host: 192.168.8.1
   port: 3306
   table_prefix: 

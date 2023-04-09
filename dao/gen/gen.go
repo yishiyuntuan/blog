@@ -16,74 +16,64 @@ import (
 )
 
 var (
-	Q                     = new(Query)
-	Another_for_unit_test *another_for_unit_test
-	Article               *article
-	Article_tags          *article_tags
-	Category              *category
-	Menuchild             *menuchild
-	Message               *message
-	Question              *question
-	Tags                  *tags
-	User                  *user
+	Q            = new(Query)
+	Article      *article
+	Article_path *article_path
+	Article_tags *article_tags
+	Category     *category
+	Menuchild    *menuchild
+	Tags         *tags
+	User         *user
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
-	Another_for_unit_test = &Q.Another_for_unit_test
 	Article = &Q.Article
+	Article_path = &Q.Article_path
 	Article_tags = &Q.Article_tags
 	Category = &Q.Category
 	Menuchild = &Q.Menuchild
-	Message = &Q.Message
-	Question = &Q.Question
 	Tags = &Q.Tags
 	User = &Q.User
 }
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
-		db:                    db,
-		Another_for_unit_test: newAnother_for_unit_test(db, opts...),
-		Article:               newArticle(db, opts...),
-		Article_tags:          newArticle_tags(db, opts...),
-		Category:              newCategory(db, opts...),
-		Menuchild:             newMenuchild(db, opts...),
-		Message:               newMessage(db, opts...),
-		Question:              newQuestion(db, opts...),
-		Tags:                  newTags(db, opts...),
-		User:                  newUser(db, opts...),
+		db:           db,
+		Article:      newArticle(db, opts...),
+		Article_path: newArticle_path(db, opts...),
+		Article_tags: newArticle_tags(db, opts...),
+		Category:     newCategory(db, opts...),
+		Menuchild:    newMenuchild(db, opts...),
+		Tags:         newTags(db, opts...),
+		User:         newUser(db, opts...),
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-	Another_for_unit_test another_for_unit_test
-	Article               article
-	Article_tags          article_tags
-	Category              category
-	Menuchild             menuchild
-	Message               message
-	Question              question
-	Tags                  tags
-	User                  user
+	Article      article
+	Article_path article_path
+	Article_tags article_tags
+	Category     category
+	Menuchild    menuchild
+	Tags         tags
+	User         user
 }
 
 func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:                    db,
-		Another_for_unit_test: q.Another_for_unit_test.clone(db),
-		Article:               q.Article.clone(db),
-		Article_tags:          q.Article_tags.clone(db),
-		Category:              q.Category.clone(db),
-		Menuchild:             q.Menuchild.clone(db),
-		Message:               q.Message.clone(db),
-		Question:              q.Question.clone(db),
-		Tags:                  q.Tags.clone(db),
-		User:                  q.User.clone(db),
+		db:           db,
+		Article:      q.Article.clone(db),
+		Article_path: q.Article_path.clone(db),
+		Article_tags: q.Article_tags.clone(db),
+		Category:     q.Category.clone(db),
+		Menuchild:    q.Menuchild.clone(db),
+		Tags:         q.Tags.clone(db),
+		User:         q.User.clone(db),
 	}
 }
 
@@ -97,42 +87,36 @@ func (q *Query) WriteDB() *Query {
 
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
-		db:                    db,
-		Another_for_unit_test: q.Another_for_unit_test.replaceDB(db),
-		Article:               q.Article.replaceDB(db),
-		Article_tags:          q.Article_tags.replaceDB(db),
-		Category:              q.Category.replaceDB(db),
-		Menuchild:             q.Menuchild.replaceDB(db),
-		Message:               q.Message.replaceDB(db),
-		Question:              q.Question.replaceDB(db),
-		Tags:                  q.Tags.replaceDB(db),
-		User:                  q.User.replaceDB(db),
+		db:           db,
+		Article:      q.Article.replaceDB(db),
+		Article_path: q.Article_path.replaceDB(db),
+		Article_tags: q.Article_tags.replaceDB(db),
+		Category:     q.Category.replaceDB(db),
+		Menuchild:    q.Menuchild.replaceDB(db),
+		Tags:         q.Tags.replaceDB(db),
+		User:         q.User.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
-	Another_for_unit_test IAnother_for_unit_testDo
-	Article               IArticleDo
-	Article_tags          IArticle_tagsDo
-	Category              ICategoryDo
-	Menuchild             IMenuchildDo
-	Message               IMessageDo
-	Question              IQuestionDo
-	Tags                  ITagsDo
-	User                  IUserDo
+	Article      IArticleDo
+	Article_path IArticle_pathDo
+	Article_tags IArticle_tagsDo
+	Category     ICategoryDo
+	Menuchild    IMenuchildDo
+	Tags         ITagsDo
+	User         IUserDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		Another_for_unit_test: q.Another_for_unit_test.WithContext(ctx),
-		Article:               q.Article.WithContext(ctx),
-		Article_tags:          q.Article_tags.WithContext(ctx),
-		Category:              q.Category.WithContext(ctx),
-		Menuchild:             q.Menuchild.WithContext(ctx),
-		Message:               q.Message.WithContext(ctx),
-		Question:              q.Question.WithContext(ctx),
-		Tags:                  q.Tags.WithContext(ctx),
-		User:                  q.User.WithContext(ctx),
+		Article:      q.Article.WithContext(ctx),
+		Article_path: q.Article_path.WithContext(ctx),
+		Article_tags: q.Article_tags.WithContext(ctx),
+		Category:     q.Category.WithContext(ctx),
+		Menuchild:    q.Menuchild.WithContext(ctx),
+		Tags:         q.Tags.WithContext(ctx),
+		User:         q.User.WithContext(ctx),
 	}
 }
 
@@ -141,10 +125,14 @@ func (q *Query) Transaction(fc func(tx *Query) error, opts ...*sql.TxOptions) er
 }
 
 func (q *Query) Begin(opts ...*sql.TxOptions) *QueryTx {
-	return &QueryTx{q.clone(q.db.Begin(opts...))}
+	tx := q.db.Begin(opts...)
+	return &QueryTx{Query: q.clone(tx), Error: tx.Error}
 }
 
-type QueryTx struct{ *Query }
+type QueryTx struct {
+	*Query
+	Error error
+}
 
 func (q *QueryTx) Commit() error {
 	return q.db.Commit().Error

@@ -15,15 +15,14 @@ const TableNameUser = "user"
 // User mapped from table <user>
 type User struct {
 	ID        uint64         `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true" json:"id"`
-	CreatedAt time.Time      `gorm:"column:created_at;type:datetime(3)" json:"created_at"`
-	UpdatedAt time.Time      `gorm:"column:updated_at;type:datetime(3)" json:"updated_at"`
-	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;type:datetime(3);index:idx_user_deleted_at,priority:1" json:"deleted_at"`
-	Username  string         `gorm:"column:username;type:varchar(40);not null" json:"username"`  // 用户名
-	Password  []byte         `gorm:"column:password;type:varchar(100);not null" json:"password"` // 密码
-	Relation  string         `gorm:"column:relation;type:longtext;not null" json:"relation"`
-	Role      int64          `gorm:"column:role;type:bigint" json:"role"`          // 权限
-	Avatar    string         `gorm:"column:avatar;type:varchar(20)" json:"avatar"` // 头像
-	NickName  string         `gorm:"column:nick_name;type:varchar(20)" json:"nick_name"`
+	CreatedAt time.Time      `gorm:"column:created_at;type:datetime" json:"created_at"`
+	UpdatedAt time.Time      `gorm:"column:updated_at;type:datetime" json:"updated_at"`
+	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;type:datetime;index:idx_user_deleted_at,priority:1" json:"deleted_at"`
+	Username  string         `gorm:"column:username;type:varchar(20);not null;comment:用户名" json:"username"`
+	Password  []byte         `gorm:"column:password;type:varchar(20);not null;comment:密码" json:"password"`
+	Relation  string         `gorm:"column:relation;type:varchar(20);not null;comment:关系" json:"relation"`
+	Role      int64          `gorm:"column:role;type:bigint;comment:权限" json:"role"`
+	Avatar    string         `gorm:"column:avatar;type:varchar(20);comment:头像" json:"avatar"`
 }
 
 // TableName User's table name

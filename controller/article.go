@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"blog/dao/gen"
 	"blog/dao/mapper"
 	"blog/model/vo"
 	"blog/service"
@@ -12,17 +11,16 @@ import (
 	"github.com/kataras/iris/v12/mvc"
 )
 
+type ArticleController struct {
+	service service.ArticleService
+}
+
 func (ac ArticleController) Configure(r router.Party) {
-	// 依赖注入
-	dao := mapper.NewArticleDao(gen.Article, gen.Q)
-	articleService := service.NewArticleService(service.WithArticleDao(dao))
-	r.RegisterDependency(articleService)
-	r.Use(iris.Compression)
-	// ac.Service = articleService.NewArticleService(articleService.WithA(30000))
+	ac.service = service.NewService[service.ArticleServiceImpl](service.WithArticleDao(mapper.NewArticleDao()))
+	//r.RegisterDependency(s)
 	mvc.Configure(r, func(app *mvc.Application) {
 		app.Handle(&ac)
 	})
-	// r.Get("/test",)
 }
 
 // GetList
@@ -33,15 +31,15 @@ func (ac ArticleController) Configure(r router.Party) {
 // @Param   pageSize    query    int     false        "分页大小"
 // @Param   pageNum     query    int     false        "页码"
 // @Router /article/list [get]
+// func (ac ArticleController) GetList(ctx iris.Context, service service.ArticleService) *vo.Result {
 func (ac ArticleController) GetList(ctx iris.Context) *vo.Result {
 	// 分页最大数,分页偏移量
 	size, num := tool.PageTool(ctx)
 	cid := ctx.URLParam("cid") // 分类ID
 	mid := ctx.URLParam("mid") // 菜单ID
 	tid := ctx.URLParam("tid") // 标签ID
-
-	list, total := ac.Service.GetsArticleList(cid, mid, tid, size, num)
-
+	list, total := ac.service.GetsArticleList(cid, mid, tid, size, num)
+	//list, total := service.GetsArticleList(cid, mid, tid, size, num)
 	data := map[string]interface{}{
 		"list":  list,
 		"total": total,
@@ -54,6 +52,9 @@ func (ac ArticleController) GetList(ctx iris.Context) *vo.Result {
 // @Param   id     path    int     true        "文章ID"
 // @Router /article/{id} [get]
 func (ac ArticleController) GetBy(id uint64) *vo.Result {
-	article := ac.Service.GetArticle(id)
+	article := ac.service.GetArticle(id)
+	if article == nil {
+		return vo.Fail(vo.WithMessage("文章不存在"))
+	}
 	return vo.Success(vo.WithData(article))
 }

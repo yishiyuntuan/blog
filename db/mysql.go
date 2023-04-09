@@ -3,14 +3,14 @@ package db
 import (
 	"blog/middleware/logger"
 	"fmt"
-	"log"
 	"os"
+	"path/filepath"
+	"runtime"
 	"time"
 
 	"gopkg.in/yaml.v3"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
-	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
@@ -28,7 +28,7 @@ func GetDB() *gorm.DB {
 	var dialector gorm.Dialector
 
 	DatabaseSetting := config().Database
-	logger.Log.Debug(DatabaseSetting)
+	logger.Log.Info("初始化：", DatabaseSetting)
 	switch DatabaseSetting.Type {
 	case "mysql":
 		dbURI = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=true",
@@ -56,15 +56,15 @@ func GetDB() *gorm.DB {
 			DSN:                  "user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai",
 			PreferSimpleProtocol: true, // disables implicit prepared statement usage
 		})
-	case "sqlite3":
-		dbURI = fmt.Sprintf("test.db")
-		dialector = sqlite.Open("test.db")
+		// case "sqlite3":
+		// 	dbURI = fmt.Sprintf("test.db")
+		// 	dialector = sqlite.Open("test.db")
 	}
 	logger.Log.Debug(dialector)
 
 	conn, err := gorm.Open(dialector, &gorm.Config{})
 	if err != nil {
-		log.Print(err.Error())
+		logger.Log.Panicf("连接数据库失败: %v", err)
 	}
 	sqlDB, err := conn.DB()
 	if err != nil {
@@ -86,9 +86,12 @@ type Config struct {
 func config() *Config {
 	// GlobalConfigSetting 配置实例
 	var ConfigSetting = &Config{}
-	filePtr, err := os.Open("db/config.yaml") // config的文件目录
+	filePtr, err := os.Open("config/config.yaml") // config的文件目录
 	if err != nil {
-		return nil
+		filePtr, err = os.Open(currentFile() + "/config.yaml")
+		if err != nil {
+			return nil
+		}
 	}
 	defer filePtr.Close()
 	// 创建yaml解码器
@@ -106,4 +109,16 @@ type Database struct {
 	Port        string `yaml:"port"`
 	Name        string `yaml:"name"`
 	TablePrefix string `yaml:"table_prefix"`
+}
+
+func currentFile() string {
+	_, file, _, ok := runtime.Caller(1)
+	// _, file0, _, ok := runtime.Caller(0)
+	// _, file2, _, ok := runtime.Caller(2)
+	// fmt.Println(file, file0, file2)
+	if !ok {
+		panic("Can not get current file info")
+	}
+
+	return filepath.Dir(file)
 }

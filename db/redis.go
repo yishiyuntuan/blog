@@ -11,8 +11,8 @@ import (
 func GetRedisClient() *redis.Client {
 	// 初始化redis，连接地址和端口，密码，数据库名称
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
-		Password: "123456",
+		Addr:     "192.168.8.1:6379",
+		Password: "yishiyuntuan",
 		DB:       0,
 
 		// 连接池容量及闲置连接数量

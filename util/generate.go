@@ -86,17 +86,17 @@ func GenerateTableStruct(db *gorm.DB) {
 	})
 
 	// 数据类型映射
-	dataMap := map[string]func(detailType string) (dataType string){
-		"int": func(detailType string) (dataType string) {
-			//	if strings.Contains(detailType, "unsigned") {
-			//	   return "uint64"
-			//	}
+	dataMap := map[string]func(detailType gorm.ColumnType) (dataType string){
+		"int": func(detailType gorm.ColumnType) (dataType string) {
+			//if strings.Contains(detailType, "unsigned") {
+			//   return "uint64"
+			//}
 			return "int64"
 		},
-		"bigint": func(detailType string) (dataType string) {
-			//	if strings.Contains(detailType, "unsigned") {
-			//	   return "uint64"
-			//	}
+		"bigint": func(detailType gorm.ColumnType) (dataType string) {
+			//if strings.Contains(detailType, "unsigned") {
+			//   return "uint64"
+			//}
 			return "int64"
 		},
 	}
@@ -105,21 +105,17 @@ func GenerateTableStruct(db *gorm.DB) {
 	// 要先于`ApplyBasic`执行
 	g.WithDataTypeMap(dataMap)
 
-	// 生成数据库内所有表的结构体
-	// for _, v := range g.GenerateAllTable() {
-	// 	v2 := v.(string)
-	// 	g.GenerateModel(v2, gen.WithMethod(CommonMethod))
-	// }
-
-	// 生成某张表的结构体
-	// g.GenerateModelAs("tblUser", "User")
-	// Add all methods defined on `CommonMethod` to the generated `User` struct
-	// g.GenerateModel("article", gen.WithMethod(CommonMethod{}.MarshalBinary()))
-
-	g.ApplyBasic(g.GenerateAllTable()...)
-
-	// / 为指定的数据库表实现除基础方法外的相关方法
-	// g.ApplyInterface(func(method dao.Method) {}, model.User{}, g.GenerateModel("company"))
+	//g.ApplyBasic(g.GenerateAllTable()...)
+	g.ApplyBasic(
+		// 密码字段属性为[]byte
+		g.GenerateModelAs("user", "User", gen.FieldType("password", "[]byte")),
+		g.GenerateModelAs("article", "Article"),
+		g.GenerateModelAs("article_path", "AriclePath"),
+		g.GenerateModelAs("article_tags", "ArticleTags"),
+		g.GenerateModelAs("category", "Category"),
+		g.GenerateModelAs("menuchild", "MenuChild"),
+		g.GenerateModelAs("tags", "Tags"),
+	)
 
 	// 执行
 	g.Execute()

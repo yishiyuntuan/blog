@@ -32,11 +32,10 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 	_user.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_user.DeletedAt = field.NewField(tableName, "deleted_at")
 	_user.Username = field.NewString(tableName, "username")
-	_user.Password = field.NewString(tableName, "password")
+	_user.Password = field.NewBytes(tableName, "password")
 	_user.Relation = field.NewString(tableName, "relation")
 	_user.Role = field.NewInt64(tableName, "role")
 	_user.Avatar = field.NewString(tableName, "avatar")
-	_user.NickName = field.NewString(tableName, "nick_name")
 
 	_user.fillFieldMap()
 
@@ -52,11 +51,10 @@ type user struct {
 	UpdatedAt field.Time
 	DeletedAt field.Field
 	Username  field.String // 用户名
-	Password  field.String // 密码
-	Relation  field.String
+	Password  field.Bytes  // 密码
+	Relation  field.String // 关系
 	Role      field.Int64  // 权限
 	Avatar    field.String // 头像
-	NickName  field.String
 
 	fieldMap map[string]field.Expr
 }
@@ -78,11 +76,10 @@ func (u *user) updateTableName(table string) *user {
 	u.UpdatedAt = field.NewTime(table, "updated_at")
 	u.DeletedAt = field.NewField(table, "deleted_at")
 	u.Username = field.NewString(table, "username")
-	u.Password = field.NewString(table, "password")
+	u.Password = field.NewBytes(table, "password")
 	u.Relation = field.NewString(table, "relation")
 	u.Role = field.NewInt64(table, "role")
 	u.Avatar = field.NewString(table, "avatar")
-	u.NickName = field.NewString(table, "nick_name")
 
 	u.fillFieldMap()
 
@@ -99,7 +96,7 @@ func (u *user) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (u *user) fillFieldMap() {
-	u.fieldMap = make(map[string]field.Expr, 10)
+	u.fieldMap = make(map[string]field.Expr, 9)
 	u.fieldMap["id"] = u.ID
 	u.fieldMap["created_at"] = u.CreatedAt
 	u.fieldMap["updated_at"] = u.UpdatedAt
@@ -109,7 +106,6 @@ func (u *user) fillFieldMap() {
 	u.fieldMap["relation"] = u.Relation
 	u.fieldMap["role"] = u.Role
 	u.fieldMap["avatar"] = u.Avatar
-	u.fieldMap["nick_name"] = u.NickName
 }
 
 func (u user) clone(db *gorm.DB) user {

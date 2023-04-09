@@ -1,10 +1,12 @@
 package main
 
 import (
-	"blog/api/v1/routes"
-	"blog/middleware/logger"
-
 	"github.com/kataras/iris/v12"
+
+	"blog/api/v1/routes"
+	"blog/dao/mapper"
+	"blog/middleware/logger"
+	"blog/service"
 )
 
 // @title Swagger Example API
@@ -23,11 +25,22 @@ import (
 // @BasePath /
 func main() {
 	app := iris.Default()
-
 	app.UseRouter(logger.LoggerHandler)
-	routes.InitRouterV2(app)
+	routes.InitRouterV1(app)
 	err := app.Listen(":3000")
 	if err != nil {
 		return
 	}
+}
+func DI(app *iris.Application) {
+	app.UseRouter()
+
+	// 依赖注入
+	app.RegisterDependency(service.NewService[service.ArticleServiceImpl](service.WithArticleDao(mapper.NewArticleDao())))
+	app.RegisterDependency(service.NewService[service.CategoryServiceImpl](service.WithCategoryDao(mapper.NewCategoryDao())))
+	// app.RegisterDependency(service.NewService[service.MenuChildServiceImpl](service.WithMenuChildDao(mapper.NewMenuDao(gen.Menuchild))))
+	app.RegisterDependency(service.NewService[service.TagServiceImpl](service.WithTagDao(mapper.NewTagDao())))
+
+	app.RegisterDependency(service.NewService[service.UserServiceImpl](service.WithUserDao(mapper.NewUserDao())))
+
 }

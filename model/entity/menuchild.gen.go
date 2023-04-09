@@ -9,12 +9,12 @@ const TableNameMenuchild = "menuchild"
 // Menuchild mapped from table <menuchild>
 type Menuchild struct {
 	ID       uint64 `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true" json:"id"`
-	Sort     uint64 `gorm:"column:sort;type:bigint unsigned" json:"sort"`                                      // 排序字段
-	Name     string `gorm:"column:name;type:varchar(256);not null;uniqueIndex:name,priority:1" json:"name"`    // 菜单名
-	Ename    string `gorm:"column:ename;type:varchar(256);not null;uniqueIndex:ename,priority:1" json:"ename"` // 英文名
-	Logo     string `gorm:"column:logo;type:longtext;not null" json:"logo"`                                    // 图标名
-	Link     string `gorm:"column:link;type:varchar(256);not null;uniqueIndex:link,priority:1" json:"link"`    // 路由名
-	ParentID uint64 `gorm:"column:parent_id;type:bigint unsigned;not null" json:"parent_id"`                   // 父级id
+	Sort     uint64 `gorm:"column:sort;type:bigint unsigned;comment:排序字段" json:"sort"`
+	Name     string `gorm:"column:name;type:varchar(256);not null;uniqueIndex:name,priority:1;comment:菜单名" json:"name"`
+	Ename    string `gorm:"column:ename;type:varchar(256);not null;uniqueIndex:ename,priority:1;comment:英文名" json:"ename"`
+	Icon     string `gorm:"column:icon;type:longtext;not null;comment:图标svg格式" json:"icon"`
+	Link     string `gorm:"column:link;type:varchar(256);not null;uniqueIndex:link,priority:1;comment:路由名" json:"link"`
+	ParentID uint64 `gorm:"column:parent_id;type:bigint unsigned;not null;comment:父级id" json:"parent_id"`
 }
 
 // TableName Menuchild's table name

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"blog/dao/mapper"
 	"blog/middleware/logger"
 	"blog/model/entity"
 	"time"
@@ -9,11 +10,24 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (u userServiceImpl) IsExist(username string) bool {
+type UserServiceImpl struct {
+	iDao mapper.UserDao
+}
+
+func WithUserDao(iDao mapper.UserDao) Option {
+
+	return func(u any) {
+		impl, ok := u.(*UserServiceImpl)
+		if ok {
+			impl.iDao = iDao
+		}
+	}
+}
+func (u UserServiceImpl) IsExist(username string) bool {
 	return u.iDao.IsExist(username)
 }
 
-func (u userServiceImpl) Register(user entity.User) error { // password 加密
+func (u UserServiceImpl) Register(user entity.User) error { // password 加密
 	hash, err := bcrypt.GenerateFromPassword(user.Password, bcrypt.DefaultCost)
 	if err != nil {
 		return err

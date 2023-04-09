@@ -15,14 +15,13 @@ const TableNameArticle = "article"
 // Article mapped from table <article>
 type Article struct {
 	ID        uint64         `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true" json:"id"`
-	CreatedAt time.Time      `gorm:"column:created_at;type:datetime(3)" json:"created_at"`
-	UpdatedAt time.Time      `gorm:"column:updated_at;type:datetime(3)" json:"updated_at"`
-	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;type:datetime(3);index:idx_article_deleted_at,priority:1" json:"deleted_at"`
-	Title     string         `gorm:"column:title;type:varchar(64);not null" json:"title"`                              // 标题
-	Img       string         `gorm:"column:img;type:varchar(128)" json:"img"`                                          // 首图
-	Desc      string         `gorm:"column:desc;type:varchar(255)" json:"desc"`                                        // 描述
-	Content   string         `gorm:"column:content;type:longtext" json:"content"`                                      // 内容
-	Cid       uint64         `gorm:"column:cid;type:bigint unsigned;index:fk_category_articles,priority:1" json:"cid"` // 分类ID
+	CreatedAt time.Time      `gorm:"column:created_at;type:datetime" json:"created_at"`
+	UpdatedAt time.Time      `gorm:"column:updated_at;type:datetime" json:"updated_at"`
+	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;type:datetime;index:idx_article_deleted_at,priority:1" json:"deleted_at"`
+	Title     string         `gorm:"column:title;type:varchar(64);not null;comment:标题" json:"title"`
+	Img       string         `gorm:"column:img;type:varchar(128);comment:首图" json:"img"`
+	Desc      string         `gorm:"column:desc;type:varchar(255);comment:描述" json:"desc"`
+	Cid       uint64         `gorm:"column:cid;type:bigint unsigned;index:fk_category_articles,priority:1;comment:分类ID" json:"cid"`
 }
 
 // TableName Article's table name

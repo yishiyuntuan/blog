@@ -1,0 +1,11 @@
+GET http://localhost:3000/api/v1/tag/article/tag?id=1
+Accept: application/json
+
+###
+
+GET http://localhost:3000/api/v1/article/3
+Accept: application/json
+
+###
+GET http://localhost:3000/api/v1/article/list?mid=0
+Accept: application/json

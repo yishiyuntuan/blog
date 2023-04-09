@@ -1,5 +1,8 @@
 package vo
 
+// Result
+// @model Result
+// @description 返回结果
 type Result struct {
 	// 返回状态
 	Status string `json:"status"`
